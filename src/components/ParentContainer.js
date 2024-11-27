@@ -52,6 +52,7 @@ const ParentContainer = () => {
     const handleMessage = (event) => {
         if (event.origin !== 'http://localhost:3000') return;
         if (event.data.type === 'iframeHeight') {
+            console.log('Message received:', event.data);
             setIframeHeight(event.data.height); // Adjust the iframe height
         }
     };
@@ -59,7 +60,7 @@ const ParentContainer = () => {
     // Function to toggle iframe visibility
     const toggleIframeVisibility = () => {
         setIsIframeVisible(!isIframeVisible);
-        document.body.style.overflow = !isIframeVisible ? 'hidden' : ''; // Apply or remove overflow hidden
+        //document.body.style.overflow = !isIframeVisible ? 'hidden' : ''; // Apply or remove overflow hidden
     };
 
     useEffect(() => {
@@ -82,16 +83,18 @@ const ParentContainer = () => {
                 </button>
             </div>
             {isIframeVisible && ( // Render the iframe only if isIframeVisible is true
-                <div>
+                <div className='container-iframe'>
                     <iframe
                         src="http://localhost:3000"
                         title="GIF Search"
+                        scrolling="yes"
                         style={{
                             width: '100%',
                             height: `${iframeHeight}px`,
                             border: '1px solid #ccc',
                             transition: 'height 0.3s ease', // Smooth height transition
-                            overflow: 'hidden', // Evita scroll interno en el iframe (el scroll es del contenido)
+                            overflow: 'auto', // Enables internal scrolling
+                            WebkitOverflowScrolling: 'touch', // Enables smooth scrolling on iOS devices
                         }}
                     ></iframe>
                 </div>
